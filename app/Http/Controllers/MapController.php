@@ -18,7 +18,7 @@ class MapController extends MainController
             $formattedPositions[] = $formattedPosition;
         }
 
-        return view('maptest', ['map' => $formattedPositions]);
+        return ['map' => $formattedPositions];
     }
 
     public function formatCoordinates($position_x, $position_y)

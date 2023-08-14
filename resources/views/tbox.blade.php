@@ -8,15 +8,16 @@
     <link href="{{ asset('css/reset.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/header.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/tab.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/video.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/trip.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/date-picker.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/video.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/trip.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/c52defce05.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/date-picker.css') }}" />
 </head>
 
 <body>
     <div class="header">
-        <img src="{{ asset('pictures/MYBUS.png') }}" width="114" height="21" style="top: 20px; left:22px;    position: absolute;">
+        <img src="img/MYBUS.png" width="114" height="21" style="top: 20px; left:22px;    position: absolute;">
     </div>
 
     <!-- Tab links -->
@@ -41,6 +42,23 @@
                         echo $client->client_name;
                         echo "</option>";
                     }?>    
+            
+             <!-- <form action="/monitor-search" method="post">
+                    <div id="select-client">
+                    <select name="client" id="client" class="selbox">
+                        <?php
+                        /*echo "<option value=default selected>";
+                        echo "고객사전체";
+                        echo "</option>";
+                        foreach($clients as $client){
+    
+                            $decodedClient = json_decode('"' . $client->client_name . '"');
+                            echo "<option value= $decodedClient>";
+                            echo $decodedClient;
+                            echo "</option>";
+                        
+                        }*/?>  -->
+
                     </select>
                 </form>
             </div>
@@ -287,7 +305,7 @@
                         <span class="video-head-text">"충남 123가1234"</span>
                     </div>
                     <video controls loop width="303px" height="161px">
-                        <source src="video/shortvideo.mp4">
+                        <source src="">
                         <!-- <source src="" type="video/mp4"> -->
                     </video>
                 </div>
@@ -373,7 +391,6 @@
         <div class="group5829">
             <form action="/date" class="submitform">
                 <span class="trip">
-                    
                     트립조회
                 </span>
 
@@ -381,7 +398,7 @@
 
                 <input type="date" name="todate" required="required">
 
-                <input type="image" src="pictures/download.png" alt="Submit" height="25">
+                <input type="image" src="img/download.png" alt="Submit" height="25">
 
                 <div class="emptytrip"></div>
             </form>
@@ -547,9 +564,6 @@
 
         </div>
     </div>
-    <script src="https://kit.fontawesome.com/c52defce05.js" crossorigin="anonymous"></script>
-    <script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec1a28f6c3b248103110e5b04b708ee1"></script>
     <script>
         function openTab(evt, tabName) {
             // Declare all variables
@@ -577,7 +591,11 @@
 
         // Remove the inline style
         element.removeAttribute('style');
+
     </script>
+    <script src="js/date-picker.js"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e467dc768f9fdb18a1e882300bd07dc3"></script>
     <script>
         var container_monitor = document.getElementById('map-monitor');
         var container_replay = document.getElementById('map-replay');
@@ -590,7 +608,6 @@
         var map_replay = new kakao.maps.Map(container_replay, options);
 
     </script>
-    <script src="{{ asset('js/date-picker.js') }}"></script>
 
 </body>
 

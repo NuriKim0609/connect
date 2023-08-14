@@ -11,6 +11,6 @@ class ClientController extends MainController
     {
         $client = client::all();
 
-        return view('client', ['client' => $client]);  
+        return ['client' => $client];  
     }
 }

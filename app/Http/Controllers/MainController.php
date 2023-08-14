@@ -12,20 +12,35 @@ class MainController extends BaseController
     public function MainController(){
 
         $clientController = new ClientController();
-        $clients = $clientController -> get_client();
+        $clients = $clientController->get_client();
 
         $carSelectController = new CarSelectController();
         $selectedCar = $carSelectController->car_select();
 
-        $car_id = $selectedCar['car_id'];
-        $VRN = $selectedCar['VRN'];
-        $car_status = $selectedCar['car_status'];
-        $driver_code = $selectedCar['driver_code'];
-        $driver_name = $selectedCar['driver_name'];
+        $TripController = new TripController();
+        $selectedTrip = $TripController->trip_select();
+        
+        $MapController = new MapController();
+        $selectedMap = $MapController->getNonZeroPositions();
 
-        return view('tbox',['clients' => $clients, 'car_id' => $car_id, 'VRN' => $VRN, 'car_status' => $car_status, 'driver_code' => $driver_code,  'driver_name' => $driver_name]);
+        
+        
+        $car_list = [
+            'car_id' => $selectedCar['car_id'],
+            'VRN' => $selectedCar['VRN'],
+            'car_status' => $selectedCar['car_status'],
+            'driver_name' => $selectedCar['driver_name'],
+        ];
+        
+        
+
+        return view('tbox', [
+            'client' => $clients, 
+            'car_list' => $car_list,
+            'trip'=>$selectedTrip,
+            'map' => $selectedMap
+        ]); //ajax가 있어야 돌아갈 수 있음.
     }
     //use AuthorizesRequests, ValidatesRequests;
-    //view main 없다!!!
 }
 ?>
