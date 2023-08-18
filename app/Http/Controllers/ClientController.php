@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Models\client;
 
-class ClientController extends MainController
+class ClientController
 {
     public function get_client()
     {
@@ -14,3 +14,4 @@ class ClientController extends MainController
         return ['client' => $client];  
     }
 }
+?>

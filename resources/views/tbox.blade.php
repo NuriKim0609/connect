@@ -8,16 +8,22 @@
     <link href="{{ asset('css/reset.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/header.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/tab.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/video.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/trip.css') }}" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/c52defce05.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ asset('css/date-picker.css') }}" />
+    <link href="{{ asset('css/video.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/trip.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/date-picker.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/map.css') }}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+
+
+
+
     <div class="header">
-        <img src="img/MYBUS.png" width="114" height="21" style="top: 20px; left:22px;    position: absolute;">
+        <img src="{{ asset('pictures/MYBUS.png') }}" width="114" height="21"
+            style="top: 20px; left:22px;    position: absolute;">
     </div>
 
     <!-- Tab links -->
@@ -31,8 +37,10 @@
         <div class="monitoring-mode">
             <div class="searchveh">차량조회</div>
             <div class="monitoring-mode-search">
-
-            <select name="client" id="client" class="selbox">
+                
+                <form action="" method="post" id="search-form">
+                    <div id="select-client">
+                    <select name="client" id="client" class="selbox">
                         <?php
                         echo "<option value=default selected>";
                         echo "고객사 전체";
@@ -41,32 +49,19 @@
                         echo "<option value=$client->BIN>";
                         echo $client->client_name;
                         echo "</option>";
-                    }?>    
-            
-             <!-- <form action="/monitor-search" method="post">
-                    <div id="select-client">
-                    <select name="client" id="client" class="selbox">
-                        <?php
-                        /*echo "<option value=default selected>";
-                        echo "고객사전체";
-                        echo "</option>";
-                        foreach($clients as $client){
-    
-                            $decodedClient = json_decode('"' . $client->client_name . '"');
-                            echo "<option value= $decodedClient>";
-                            echo $decodedClient;
-                            echo "</option>";
-                        
-                        }*/?>  -->
+                    }?>
+                        </select>
+                    </div>
 
-                    </select>
+                    <div id="search-carNum">
+
+                        <label for="vnum" ></label>
+                        <!-- <label for="vnum"></label> 없어도 되지 않을까? -->
+                        <input type="text" name="vnum" id="vnum" class="vnum" placeholder="차량번호를 입력하세요">
+                        <button type="submit" id="search-button">검색</button>
+                    </div>
                 </form>
-            </div>
-            <div>
-                <form action="/vnum">
-                    <label for="vnum"></label>
-                    <input type="text" name="vnum" class="vnum" placeholder="차량번호를 검색하세요">
-                </form>
+                <div id="print"></div>
             </div>
             <div class="box3894">
                 <table>
@@ -78,7 +73,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <?php
+                    foreach ($cars as $car) {
+                        echo "<tr class='sendVrn-item'>";
+                            echo"<td>" . ($car->car_status == 1 ? 'Good' : 'Bad') . "</td>";
+                            echo"<td class='vrn-cell'>$car->VRN</td>";
+                            echo"<td>$car->car_id</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                        <!-- <tr>
                             <td>Good</td>
                             <td>강원 123가1234</td>
                             <td>노민식</td>
@@ -152,7 +156,7 @@
                             <td>Good</td>
                             <td>충남 123가1234</td>
                             <td>김홍식</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                     <tfoot>
 
@@ -212,7 +216,7 @@
                 </div>
 
             </div>
-            <div id="map-monitor" style="width:685px;height:635px;"></div>
+            <div class="map" id="map-monitor"></div>
 
 
 
@@ -305,7 +309,7 @@
                         <span class="video-head-text">"충남 123가1234"</span>
                     </div>
                     <video controls loop width="303px" height="161px">
-                        <source src="">
+                        <source src="video/shortvideo.mp4">
                         <!-- <source src="" type="video/mp4"> -->
                     </video>
                 </div>
@@ -382,7 +386,7 @@
                 </div>
 
             </div>
-            <div id="map-replay" style="width:685px;height:635px;"></div>
+            <div class="map" id="map-replay" style="width:685px;height:635px;"></div>
 
         </div>
     </div>
@@ -391,6 +395,7 @@
         <div class="group5829">
             <form action="/date" class="submitform">
                 <span class="trip">
+
                     트립조회
                 </span>
 
@@ -398,7 +403,7 @@
 
                 <input type="date" name="todate" required="required">
 
-                <input type="image" src="img/download.png" alt="Submit" height="25">
+                <input type="image" src="pictures/download.png" alt="Submit" height="25">
 
                 <div class="emptytrip"></div>
             </form>
@@ -564,51 +569,19 @@
 
         </div>
     </div>
-    <script>
-        function openTab(evt, tabName) {
-            // Declare all variables
-            var i, tabcontent, tablinks;
-
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(tabName).style.display = "grid";
-            evt.currentTarget.className += " active";
-        }
-        document.getElementById("defaultOpen").click();
-
-        const element = document.getElementById('Monitor', 'Replay');
-
-        // Remove the inline style
-        element.removeAttribute('style');
-
+    <script src="https://kit.fontawesome.com/c52defce05.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ec1a28f6c3b248103110e5b04b708ee1">
     </script>
-    <script src="js/date-picker.js"></script>
-    <script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e467dc768f9fdb18a1e882300bd07dc3"></script>
+    <script src="{{ asset('js/search-Monitor.js') }}"></script>
+    <script src="{{ asset('js/openTab.js') }}"></script>
+    <script src="{{ asset('js/kakaoMap.js') }}"></script>
+    <script src="{{ asset('js/date-picker.js') }}"></script>
+    <script src="{{ asset('js/send-VRN.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        var container_monitor = document.getElementById('map-monitor');
-        var container_replay = document.getElementById('map-replay');
-        var options = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3
-        };
-
-        var map_monitor = new kakao.maps.Map(container_monitor, options);
-        var map_replay = new kakao.maps.Map(container_replay, options);
-
+        var csrfToken = "{{ csrf_token() }}";
     </script>
-
 </body>
 
 </html>
